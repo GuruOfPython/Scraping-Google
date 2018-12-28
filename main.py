@@ -1,6 +1,7 @@
 import requests
 from urllib.parse import urljoin, urlparse, urlencode
 from lxml import html
+from utils import *
 
 addr = "2945 Irvington Rd, Falls Church, VA, 22042-1607"
 '''
@@ -21,7 +22,8 @@ streetview_url = urljoin('https://www.google.com/search', tree.xpath('//div[@cla
 print(streetview_url)
 
 raw_roadmap = tree.xpath('//div[@class="dirs"]/div[3]/a/div[1]/@style')[0]
-print(raw_roadmap)
+roadmap_url = get_url(raw_url=raw_roadmap)
+print(roadmap_url)
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
@@ -29,6 +31,14 @@ headers = {
 r = requests.get(url=streetview_url, headers = headers, stream=True)
 
 save_file_name = '1.png'
+with open(save_file_name, "wb") as png:
+    for chunk in r.iter_content(chunk_size=1024):
+        if chunk:
+            png.write(chunk)
+
+r = requests.get(url=roadmap_url, headers = headers, stream=True)
+
+save_file_name = '2.png'
 with open(save_file_name, "wb") as png:
     for chunk in r.iter_content(chunk_size=1024):
         if chunk:
