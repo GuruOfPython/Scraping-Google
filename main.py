@@ -20,6 +20,9 @@ tree = html.fromstring(r.text)
 streetview_url = urljoin('https://www.google.com/search', tree.xpath('//div[@class="dirs"]/div[2]/a/img/@src')[0])
 print(streetview_url)
 
+raw_roadmap = tree.xpath('//div[@class="dirs"]/div[3]/a/div[1]/@style')[0]
+print(raw_roadmap)
+
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
 }
